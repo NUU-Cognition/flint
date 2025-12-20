@@ -17,7 +17,7 @@ curl -fsSL https://raw.githubusercontent.com/NUU-Cognition/flint/main/install.sh
 
 1. Checks for Node 20+
 2. Downloads the latest release
-3. Installs to `~/.flint-cli` (separate from user data in `~/.flint`)
+3. Installs to `~/.nuucognition/flint/` (user data stays in `~/.flint/`)
 4. Adds `flint` command to your PATH
 
 ## Update
@@ -31,11 +31,11 @@ curl -fsSL https://raw.githubusercontent.com/NUU-Cognition/flint/main/install.sh
 ## Uninstall
 
 ```bash
-rm -rf ~/.flint-cli
+rm -rf ~/.nuucognition/flint
 sudo rm /usr/local/bin/flint  # or ~/.local/bin/flint
 ```
 
-Note: Your flint registry and config (`~/.flint/`) are preserved.
+Note: Your flint data (`~/.flint/`) is preserved.
 
 ## Verify
 

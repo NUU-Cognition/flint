@@ -2,7 +2,7 @@
 set -e
 
 REPO="NUU-Cognition/flint"
-INSTALL_DIR="$HOME/.flint-cli"
+INSTALL_DIR="$HOME/.nuucognition/flint"
 
 # Colors
 RED='\033[0;31m'
