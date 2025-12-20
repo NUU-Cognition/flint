@@ -2,7 +2,7 @@
 set -e
 
 REPO="NUU-Cognition/flint"
-INSTALL_DIR="$HOME/.flint"
+INSTALL_DIR="$HOME/.flint-cli"
 
 # Colors
 RED='\033[0;31m'
@@ -54,7 +54,7 @@ main() {
 
   # Clean existing install
   if [ -d "$INSTALL_DIR" ]; then
-    warn "Removing existing installation at $INSTALL_DIR"
+    warn "Updating existing installation at $INSTALL_DIR"
     rm -rf "$INSTALL_DIR"
   fi
 
