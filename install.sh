@@ -3,6 +3,14 @@ set -e
 
 REPO="NUU-Cognition/flint"
 INSTALL_DIR="$HOME/.nuucognition/flint"
+FORCE=false
+
+# Parse args
+for arg in "$@"; do
+  case $arg in
+    --force|-f) FORCE=true ;;
+  esac
+done
 
 # Colors
 RED='\033[0;31m'
@@ -26,11 +34,18 @@ check_node() {
   info "Node $(node -v) detected"
 }
 
-# Get latest release asset URL
+# Get latest release info (returns "version|tarball_url")
 get_latest_release() {
-  curl -s "https://api.github.com/repos/$REPO/releases/latest" \
-    | grep "browser_download_url.*tar.gz" \
-    | cut -d'"' -f4
+  curl -s "https://api.github.com/repos/$REPO/releases/latest"
+}
+
+# Get installed version
+get_installed_version() {
+  if [ -f "$INSTALL_DIR/package.json" ]; then
+    node -e "console.log(require('$INSTALL_DIR/package.json').version)" 2>/dev/null || echo ""
+  else
+    echo ""
+  fi
 }
 
 # Main
@@ -44,17 +59,33 @@ main() {
   check_node
 
   info "Fetching latest release..."
-  TARBALL_URL=$(get_latest_release)
+  RELEASE_JSON=$(get_latest_release)
+
+  LATEST_VERSION=$(echo "$RELEASE_JSON" | grep '"tag_name"' | cut -d'"' -f4 | sed 's/^v//')
+  TARBALL_URL=$(echo "$RELEASE_JSON" | grep "browser_download_url.*tar.gz" | cut -d'"' -f4)
 
   if [ -z "$TARBALL_URL" ]; then
     error "Could not find latest release. Check https://github.com/$REPO/releases"
   fi
 
-  info "Downloading from $TARBALL_URL"
+  # Check if already up to date
+  INSTALLED_VERSION=$(get_installed_version)
+  if [ -n "$INSTALLED_VERSION" ] && [ "$INSTALLED_VERSION" = "$LATEST_VERSION" ] && [ "$FORCE" = false ]; then
+    info "Already up to date (v$INSTALLED_VERSION)"
+    echo ""
+    echo "  Use --force to reinstall."
+    echo ""
+    exit 0
+  fi
+
+  if [ -n "$INSTALLED_VERSION" ]; then
+    info "Updating v$INSTALLED_VERSION → v$LATEST_VERSION"
+  else
+    info "Installing v$LATEST_VERSION"
+  fi
 
   # Clean existing install
   if [ -d "$INSTALL_DIR" ]; then
-    warn "Updating existing installation at $INSTALL_DIR"
     rm -rf "$INSTALL_DIR"
   fi
 
