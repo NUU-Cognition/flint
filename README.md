@@ -4,6 +4,20 @@ A cognitive mesh CLI for structured knowledge work.
 
 ## Install
 
+### macOS / Linux
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/NUU-Cognition/flint/main/install.sh | bash
+```
+
+### Windows (PowerShell)
+
+```powershell
+irm https://raw.githubusercontent.com/NUU-Cognition/flint/main/install.ps1 | iex
+```
+
+### Windows (Git Bash / WSL)
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/NUU-Cognition/flint/main/install.sh | bash
 ```
@@ -11,31 +25,34 @@ curl -fsSL https://raw.githubusercontent.com/NUU-Cognition/flint/main/install.sh
 ### Requirements
 
 - **Node.js 20+** — [Download](https://nodejs.org)
-- **macOS or Linux** (Windows users: use WSL)
+- **macOS, Linux, or Windows**
 
 ### What it does
 
 1. Checks for Node 20+
 2. Downloads the latest release
-3. Installs to `~/.nuucognition/flint/` (user data stays in `~/.flint/`)
+3. Installs to `~/.flint` (Unix) or `%USERPROFILE%\.flint` (Windows)
 4. Adds `flint` command to your PATH
 
 ## Update
 
-Re-run the install command:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/NUU-Cognition/flint/main/install.sh | bash
-```
+Re-run the install command for your platform (see Install section above).
 
 ## Uninstall
 
+### macOS / Linux
+
 ```bash
-rm -rf ~/.nuucognition/flint
+rm -rf ~/.flint
 sudo rm /usr/local/bin/flint  # or ~/.local/bin/flint
 ```
 
-Note: Your flint data (`~/.flint/`) is preserved.
+### Windows (PowerShell)
+
+```powershell
+Remove-Item -Recurse -Force "$env:USERPROFILE\.flint"
+# Then manually remove from PATH via System Environment Variables
+```
 
 ## Verify
 
