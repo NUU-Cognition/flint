@@ -92,6 +92,9 @@ main() {
   mkdir -p "$INSTALL_DIR"
   curl -sL "$TARBALL_URL" | tar -xz -C "$INSTALL_DIR" --strip-components=1
 
+  # FIX: Set execute permission on bin/flint (needed when tarball created on Windows)
+  chmod +x "$INSTALL_DIR/bin/flint"
+
   # Symlink to PATH
   if sudo ln -sf "$INSTALL_DIR/bin/flint" /usr/local/bin/flint 2>/dev/null; then
     info "Linked to /usr/local/bin/flint"
